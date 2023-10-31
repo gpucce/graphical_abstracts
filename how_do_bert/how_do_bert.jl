@@ -63,6 +63,9 @@ end
 	text("upos_verbs: 1, upos_adj: 1", Point(110, v2 + 15),
 		valign=:middle,
 		halign=:left)
+	fontsize(20)
+	text("Frozen", Point(-230, v2 + 60), valign=:bottom, halign=:center)
+	text("Transformer", Point(-230, v2 + 70), valign=:top, halign=:center)
 	arrow(Point(-110, v2 + 20), Point(-110, v3 - 15))
 	s_factor = 0.12
 	scale(s_factor, s_factor)
@@ -70,7 +73,6 @@ end
 	placeimage(readpng("./nn_icon_frozen_cut.png"), nn_p, centered=true)
 	# circle(nn_p, 350, :stroke)
 	scale(1/s_factor, 1/s_factor)
-	fontsize(20)
 	text(
 		L"[x_1, x_2, \dots, x_{767}, x_{768}]", Point(-170, v3),
 		valign=:middle,
