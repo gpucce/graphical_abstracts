@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.30
+# v0.19.31
 
 using Markdown
 using InteractiveUtils
@@ -46,7 +46,7 @@ end
 	s_factor = 0.1
 	scale(s_factor, s_factor)
 	nn_p = Point(-1000, -250)
-	placeimage(readpng("./nn_icon_frozen.png"), nn_p, centered=true)
+	placeimage(readpng("./nn_icon_frozen_cut.png"), nn_p, centered=true)
 	# circle(nn_p, 350, :stroke)
 	scale(1/s_factor, 1/s_factor)
 	text(
@@ -942,6 +942,6 @@ version = "3.5.0+0"
 # ╔═╡ Cell order:
 # ╟─9b03d9dc-74a5-11ee-3b22-d94d471763ec
 # ╟─de8734a6-7fe3-4d79-bb52-d0a85c621a2d
-# ╟─7e660b2b-f673-4143-ac3f-eea22c5e5634
+# ╠═7e660b2b-f673-4143-ac3f-eea22c5e5634
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
