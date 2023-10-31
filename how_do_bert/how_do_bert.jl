@@ -43,12 +43,6 @@ end
 		halign=:right
 	)
 	fontsize(15)
-	s_factor = 0.1
-	scale(s_factor, s_factor)
-	nn_p = Point(-1000, -250)
-	placeimage(readpng("./nn_icon_frozen_cut.png"), nn_p, centered=true)
-	# circle(nn_p, 350, :stroke)
-	scale(1/s_factor, 1/s_factor)
 	text(
 		"A sentence annotated with linguistic features",
 		Point(-270, v2),
@@ -69,6 +63,13 @@ end
 	text("upos_verbs: 1, upos_adj: 1", Point(110, v2 + 15),
 		valign=:middle,
 		halign=:left)
+	arrow(Point(-110, v2 + 20), Point(-110, v3 - 15))
+	s_factor = 0.12
+	scale(s_factor, s_factor)
+	nn_p = Point(-900, -250)
+	placeimage(readpng("./nn_icon_frozen_cut.png"), nn_p, centered=true)
+	# circle(nn_p, 350, :stroke)
+	scale(1/s_factor, 1/s_factor)
 	fontsize(20)
 	text(
 		L"[x_1, x_2, \dots, x_{767}, x_{768}]", Point(-170, v3),

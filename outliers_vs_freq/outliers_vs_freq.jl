@@ -86,10 +86,10 @@ end
 	fontsize(15)
 	text("Downstream Accuracy", Point(h5, v0 + 30), halign=:center, valign=:middle)
 	params = draw_outliers(v1, h2, h3, color="red")
-	text("Layer Norm", Point(h1, v1), valign=:middle, halign=:left)
+	text("With Outliers", Point(h1, v1), valign=:middle, halign=:left)
 	text("90%", Point(h4, v1), valign=:middle, halign=:left)
 	draw_dots([Point(p.x, p.y + v2 - v1) for p in params], v2)
-	text("Outliers set to 0", Point(h1, v2), valign=:middle, halign=:left)
+	text("W/o Outliers", Point(h1, v2), valign=:middle, halign=:left)
 	text("60%", Point(h4, v2), valign=:middle, halign=:left)
 
 	# slide frame
