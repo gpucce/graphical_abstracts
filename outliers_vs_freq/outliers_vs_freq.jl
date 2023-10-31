@@ -14,31 +14,36 @@ function draw_dots(points, v1)
 	for p in points
 		setcolor("black")
 		circle(p, 2, :fill)
-		setcolor("red")
+		setcolor("orangered")
 		circle(p - offset, 2, :fill)
-		setcolor("blue")
+		setcolor("royalblue")
 		circle(p + offset, 2, :fill)
 	end
 	from = points[1].x
 	to = points[end].x
+	setcolor("black")
 	text(L"+", Point(from + abs(from - to) / 2, v1) - offset / 2, valign=:middle, halign=:center)
-	text(L"*", Point(from + abs(from - to) / 2, v1) + offset / 2, valign=:middle, halign=:center)
+	text(L"\times", Point(from + abs(from - to) / 2, v1) + offset / 2, valign=:middle, halign=:center)
+	setcolor("red")
+	setline(1)
+	box(Point(from - 20, v1 - 30), Point(to + 20, v1 + 30), :stroke)
 	setcolor(_color)
 end
 
 # ╔═╡ 61c7e966-4f9a-4e59-9547-23de7c6f3ac8
-function draw_outliers(v1, from, to; color="black", draw=true)
+function draw_outliers(v1, from, to; color="black", draw=true, offset=Point(10, 20), n_outliers = 2, σ=10)
 	_color = getcolor()
 	step = abs(to - from) / 96
 	spread = 2
-	offset = Point(10, 20)
 	p = Point(from, v1)
 	params = []
+	outliers = [308, 381]
+	outliers = outliers[1:n_outliers]
 	for (idx, i) in enumerate(from + step:step:to)
 		shift = rand(-spread:spread)
 		setcolor("black")
-		if idx in (308 ÷ (768 / 96), 381 ÷ (768 / 96))
-			shift *= 10
+		if idx in [i ÷ (768 / 96) for i in outliers]
+			shift *= σ
 			new_p = Point(i, v1 + shift)
 			push!(params, Point(new_p.x, v1))
 			draw && circle(Point(new_p.x, v1), 2, :fill)
@@ -48,44 +53,90 @@ function draw_outliers(v1, from, to; color="black", draw=true)
 			draw && circle(new_p, 2, :fill)
 		end
 
-		setcolor("red")
-		draw && circle(new_p - offset, 2, :fill)
-		draw && line(Point(i, v1) - offset, new_p - offset, :stroke)
-		setcolor("blue")
-		draw && circle(new_p + offset, 2, :fill)
-		draw && line(Point(i, v1) + offset, new_p + offset, :stroke)
+		setcolor("orangered")
+		circle(new_p - offset, 2, :fill)
+		line(Point(i, v1) - offset, new_p - offset, :stroke)
+		setcolor("royalblue")
+		circle(new_p + offset, 2, :fill)
+		line(Point(i, v1) + offset, new_p + offset, :stroke)
 		p = new_p
 	end
+	setcolor("black")
 	draw && text(L"+", Point(from + abs(from - to) / 2, v1) - offset / 2, valign=:middle, halign=:center)
-	draw && text(L"*", Point(from + abs(from - to) / 2, v1) + offset / 2, valign=:middle, halign=:center)
+	draw && text(L"\times", Point(from + abs(from - to) / 2, v1) + offset / 2, valign=:middle, halign=:center)
+	setcolor("red")
+	setline(1)
+	draw && box(Point(from - 20, v1 - 30), Point(to + 20, v1 + 30), :stroke)
 	setcolor(_color)
 	return params
 end
 
 # ╔═╡ 7272238a-5d53-42a1-b417-f46f496e8715
-@png begin
+@svg begin
 	v0 = -180
-	v1 = -130
-	v2 = -50
+	v1 = -120
+	v2 = -40
 	h1 = -250
 	h2 = -100
 	h3 = 100
-	h4 = 170
-	h5 = 180
+	h4 = 200
+	h5 = 210
+	fontsize(20)
+	text("Outliers", Point(0, v0), halign=:center, valign=:middle)
 	fontsize(15)
-	text("Downstream Accuracy", Point(h5, v0), halign=:center, valign=:middle)
+	text("Downstream Accuracy", Point(h5, v0 + 30), halign=:center, valign=:middle)
 	params = draw_outliers(v1, h2, h3, color="red")
 	text("Layer Norm", Point(h1, v1), valign=:middle, halign=:left)
 	text("90%", Point(h4, v1), valign=:middle, halign=:left)
 	draw_dots([Point(p.x, p.y + v2 - v1) for p in params], v2)
 	text("Outliers set to 0", Point(h1, v2), valign=:middle, halign=:left)
 	text("60%", Point(h4, v2), valign=:middle, halign=:left)
+
+	# slide frame
 	line(Point(-300, 0), Point(300, 0), :stroke)
 	line(O, Point(0, 200), :stroke)
+
+
+	
+	# slide bottom right
+	draw_outliers(80, 20, 250, draw=false, offset=(10, 10))
+	draw_outliers(170, 20, 250, draw=false, offset=(10, 10), n_outliers=1, σ=20)
+	fontsize(20)
+	text("Tokenization", Point(150, 15), halign=:center, valign=:middle)
 	fontsize(10)
-	text("[CLS] A sentence [SEP] can be [SEP] tokenized [SEP]", Point(20, 20))
-	text("[CLS] A sentence can be tokenized [SEP]", Point(20, 110))
-end 600 400 "outliers_vs_freq.png"
+	text("[CLS] A sentence [SEP] can be [SEP] tokenized [SEP]", Point(20, 40))	
+	text("[CLS] A sentence can be tokenized [SEP]", Point(20, 130))
+
+
+	# slide bottom left
+	fontsize(20)
+	text("Attention Shape", Point(-150, 15), halign=:center, valign=:middle)
+
+	sq_width = 80
+	s2v1, s2h1 = -260, 80
+	setcolor("orangered")
+	box(Point(s2v1, s2h1), Point(s2v1 + sq_width, s2h1 + sq_width), :fill)
+	setcolor("red")
+	setline(2)
+	line(Point(s2v1 + 50, s2h1), Point(s2v1 + 50, s2h1 + sq_width), :stroke)
+	line(Point(s2v1 + 1, s2h1), Point(s2v1 + 1, s2h1 + sq_width), :stroke)
+	line(Point(s2v1 + (sq_width - 1), s2h1), Point(s2v1 + (sq_width - 1), s2h1 + sq_width), :stroke)
+
+	s2v2, s2h2 = -120, 80
+	setcolor("orangered")
+	box(Point(s2v2, s2h2), Point(s2v2 + sq_width, s2h2 + sq_width), :fill)
+	setcolor("red")
+	setline(2)
+	line(Point(s2v2, s2h2), Point(s2v2 + sq_width, s2h2 + sq_width), :stroke)
+	# line(Point(s2v2 + 50, s2h2), Point(s2v2 + 50, s2h2 + 80), :stroke)
+	# line(Point(s2v2 + 1, s2h2), Point(s2v2 + 1, s2h2 + 80), :stroke)
+	# line(Point(s2v2 + 79, s2h2), Point(s2v2 + 79, s2h2 + 80), :stroke)
+	fontsize(15)
+	setcolor("black")
+	text("With Outliers", Point(s2v1, 60), valign=:middle, halign=:left)
+	text("W/o Outliers", Point(s2v2, 60), valign=:middle, halign=:left)
+
+end 600 400 "outliers_vs_freq.svg"
 
 # ╔═╡ fcc7eb14-e9fc-4a05-9353-e7eed8e8eb79
 
@@ -106,7 +157,7 @@ MathTeXEngine = "~0.5.6"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.9.3"
+julia_version = "1.9.2"
 manifest_format = "2.0"
 project_hash = "752b40bf7a13976a10a9305ce6a54d0c249e086e"
 
