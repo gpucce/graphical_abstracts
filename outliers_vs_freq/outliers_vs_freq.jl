@@ -136,7 +136,7 @@ end
 	text("With Outliers", Point(s2v1, 60), valign=:middle, halign=:left)
 	text("W/o Outliers", Point(s2v2, 60), valign=:middle, halign=:left)
 
-end 600 400 "outliers_vs_freq.svg"
+end 700 450 "outliers_vs_freq.svg"
 
 # ╔═╡ fcc7eb14-e9fc-4a05-9353-e7eed8e8eb79
 
