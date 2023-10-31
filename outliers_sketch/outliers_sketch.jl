@@ -22,6 +22,9 @@ bkgr = "white"
 # ╔═╡ 12a0902c-4a6e-4b7b-a77b-e1bb9144e809
 antibkgr = bkgr == "black" ? "white" : "black"
 
+# ╔═╡ 2003bb87-023a-45a9-b5df-74c3418d7633
+output_file_name = bkgr == "black" ? "_black" : ""
+
 # ╔═╡ b1e04f97-627e-4802-bd80-557aa6b7c281
 v = @svg begin
 
@@ -153,7 +156,7 @@ v = @svg begin
 	text(L"B = \left[b_1, ..., b_n\right]", p5 - (120, 35), halign=:center, valign=:middle)
 
 	
-end hsize vsize "outliers_sketch_$(bkgr).svg"
+end hsize vsize "outliers_sketch$(output_file_name).svg"
 
 # ╔═╡ 962e67bd-a050-4281-88ce-a837029d18a8
 @draw begin
@@ -1817,6 +1820,7 @@ version = "3.5.0+0"
 # ╠═674bc9ac-bc97-4101-a4e0-dab397a92cc9
 # ╠═dbb3b946-0181-409f-81f0-6a4d623c1e21
 # ╠═12a0902c-4a6e-4b7b-a77b-e1bb9144e809
+# ╠═2003bb87-023a-45a9-b5df-74c3418d7633
 # ╠═b1e04f97-627e-4802-bd80-557aa6b7c281
 # ╠═962e67bd-a050-4281-88ce-a837029d18a8
 # ╠═21edfa89-8182-417f-b4bd-3bc4500b9a07
